@@ -674,30 +674,24 @@ def Max(ord, Bokstaver, D):
     if Bokstaver == B1:
         for pos in Bokstaver:
             j = 0
-            for retning in ["høyre", "ned"]:
-                if retning == "høyre":
 
-                    for i in range(min([7, 8 - pos[0]])):
-                        if (pos[0] + i, pos[1]) == (0, 0):
-                            j = 1
-                            break
-                    if not ((ord, pos, retning) in D) and j == 1:
+            #Først høyre, så venstre
+            for i in range(min([7, 8 - pos[0]])):
+                if (pos[0] + i, pos[1]) == (0, 0):
+                    j = 1
+                    break
+                if not ((ord, pos, retning) in D) and j == 1:
+                    mh = mulige_trekk(ord, pos, retning, Bokstaver, P)
+                    Høyre[pos] = mh
 
-                        mh = mulige_trekk(ord, pos, retning, Bokstaver, P)
-                        Høyre[pos] = mh
-                        print(pos)
-                        print(Høyre[pos])
-
-                if retning == "ned":
-                    j = 0
-                    for i in range(min([7, abs(-8 - pos[1])])):
-                        if (pos[0], pos[1] - i) == (0, 0):
-                            j = 1
-                            break
-                    if not ((ord, pos, "ned") in D) and j == 1:
-                        mn = mulige_trekk(ord, pos, "ned", Bokstaver, P)
-                        Ned[pos] = mn
-                        print(Ned[pos])
+                j = 0
+            for i in range(min([7, abs(-8 - pos[1])])):
+                if (pos[0], pos[1] - i) == (0, 0):
+                    j = 1
+                    break
+                if not ((ord, pos, "ned") in D) and j == 1:
+                    mn = mulige_trekk(ord, pos, "ned", Bokstaver, P)
+                    Ned[pos] = mn
     else:
 
         for pos in Bokstaver:
@@ -874,7 +868,7 @@ def spill(Bokstaver):
     else:
         t = Max(ord, Bokstaver, D)
         a = input("Vil du ha hint? ")
-        if a in ["ja", "j", "Ja", "yes", "Yes"]:
+        if a in ["ja", "j", "Ja", "yes", "Yes", "y", "Y", "J"]:
             beste_trekk = t[1]
             max_score = t[2]
             input(f"Scoren på det beste ordet er {max_score} ")
